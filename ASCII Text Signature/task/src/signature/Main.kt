@@ -1,5 +1,9 @@
 package signature
 
 fun main() {
-    println("Hello, World!")
+    println("""
+         _____________
+        | Hyper Skill |
+         •••••••••••••
+    """.trimIndent())
 }
