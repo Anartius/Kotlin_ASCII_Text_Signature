@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://stepik.org/media/attachments/lesson/226140/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: Sat, 11 Dec 2021 16:35:25 UTC
+update_date: Thu, 16 Dec 2021 12:27:04 UTC
 stages:
 - id: 390
   step: 6173
@@ -16,7 +16,7 @@ stages:
   is_completed: true
 - id: 393
   step: 6176
-  is_completed: false
+  is_completed: true
 topics:
   0:
   - title: Computer programming
@@ -33,6 +33,8 @@ topics:
     theory_id: 4362
   - title: Values and variables
     theory_id: 4371
+  - title: Val variables
+    theory_id: 17408
   - title: Data types
     theory_id: 4388
   - title: Standard output

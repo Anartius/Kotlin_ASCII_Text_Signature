@@ -245,9 +245,15 @@ files:
         }
     }
   learner_created: false
+- name: src/roman.txt
+  visible: true
+  learner_created: true
+- name: src/medium.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/71/stages/392/implement#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Sat, 11 Dec 2021 18:21:37 UTC
-record: -1
+record: 3

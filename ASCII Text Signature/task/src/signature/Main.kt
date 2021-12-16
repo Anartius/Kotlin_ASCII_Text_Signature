@@ -1,80 +1,78 @@
 package signature
 
-import kotlin.math.ceil
+import java.io.File
 import kotlin.math.max
+import kotlin.math.ceil
+import kotlin.math.floor
 
 fun main() {
+
     print("Enter name and surname: ")
     val name = readLine()!!
-
     print("Enter person's status: ")
     val status = readLine()!!
 
-    var letterTop = ""
-    var letterMiddle = ""
-    var letterBottom = ""
-    name.forEach { letterTop += " " + getPartOfLetter(it, 0) }
-    name.forEach { letterMiddle += " " + getPartOfLetter(it, 1) }
-    name.forEach { letterBottom += " " + getPartOfLetter(it, 2) }
+    var nameTopLine = ""
+    var statusTopLine = ""
+//    val romanFileName = "../ASCII Text Signature/ASCII Text Signature/task/src/roman.txt"
+//    val mediumFileName = "../ASCII Text Signature/ASCII Text Signature/task/src/medium.txt"
+    val romanFileName = "src/roman.txt"
+    val mediumFileName = "src/medium.txt"
+    val roman = File(romanFileName)
+    val medium = File(mediumFileName)
+    val romanLines = roman.readLines(Charsets.US_ASCII)
+    val mediumLines = medium.readLines(Charsets.US_ASCII)
 
-    val length = max(letterTop.length - 1, status.length)
+    name.forEach { nameTopLine += getPartOfLetter(romanLines, it, 0) }
+    status.forEach { statusTopLine += getPartOfLetter(mediumLines, it, 0) }
+    val max = max(nameTopLine.length, statusTopLine.length)
+    println("8".repeat(max + 8))
 
-    val nameLeftSpace = ceil(((length - letterTop.length).toDouble() / 2)).toInt() + 1
-    val nameRightSpace = if ((length - (letterTop.length - 1)) % 2 == 0) {
-        ceil(((length - letterTop.length).toDouble() / 2)).toInt() + 2
-    } else (length - letterTop.length) / 2 + 3
+    printLines(name, romanLines, max)
+    printLines(status, mediumLines, max)
 
-    val statusLeftSpace = (length - status.length) / 2 + 2
-    val statusRightSpace = if ((length - status.length) % 2 == 0) {
-        (length - status.length) / 2 + 2
-    } else (length - status.length) / 2 + 3
-
-    println("*".repeat(length + 6))
-
-    println("*" + " ".repeat(nameLeftSpace) + letterTop +
-            " ".repeat(nameRightSpace) + "*")
-    println("*" + " ".repeat(nameLeftSpace) + letterMiddle +
-            " ".repeat(nameRightSpace) + "*")
-    println("*" + " ".repeat(nameLeftSpace) + letterBottom +
-            " ".repeat(nameRightSpace) + "*")
-
-    println("*" + " ".repeat(statusLeftSpace) + status +
-            " ".repeat(statusRightSpace) + "*")
-
-    println("*".repeat(length + 6))
-
+    println("8".repeat(max + 8))
 }
 
-fun getPartOfLetter (letter: Char, level: Int) : String {
 
-    val partOfLetter = when (letter.lowercase().first()) {
-        'a' -> mutableListOf("____", "|__|", "|  |")
-        'b' -> mutableListOf("___ ", "|__]", "|__]")
-        'c' -> mutableListOf("____", "|   ", "|___")
-        'd' -> mutableListOf("___ ", "|  \\", "|__/")
-        'e' -> mutableListOf("____", "|___", "|___")
-        'f' -> mutableListOf("____", "|___", "|   ")
-        'g' -> mutableListOf("____", "| __", "|__]")
-        'h' -> mutableListOf("_  _", "|__|", "|  |")
-        'i' -> mutableListOf("_", "|", "|")
-        'j' -> mutableListOf(" _", " |", "_|")
-        'k' -> mutableListOf("_  _", "|_/ ", "| \\_")
-        'l' -> mutableListOf("_   ", "|   ", "|___")
-        'm' -> mutableListOf("_  _", "|\\/|", "|  |")
-        'n' -> mutableListOf("_  _", "|\\ |", "| \\|")
-        'o' -> mutableListOf("____", "|  |", "|__|")
-        'p' -> mutableListOf("___ ", "|__]", "|   ")
-        'q' -> mutableListOf("____", "|  |", "|_\\|")
-        'r' -> mutableListOf("____", "|__/", "|  \\")
-        's' -> mutableListOf("____", "[__ ", "___]")
-        't' -> mutableListOf("___", " | ", " | ")
-        'u' -> mutableListOf("_  _", "|  |", "|__|")
-        'v' -> mutableListOf("_  _", "|  |", " \\/ ")
-        'w' -> mutableListOf("_ _ _", "| | |", "|_|_|")
-        'x' -> mutableListOf("_  _", " \\/ ", "_/\\_")
-        'y' -> mutableListOf("_   _", " \\_/ ", "  |  ")
-        'z'-> mutableListOf("___ ", "  / ", " /__")
-        else -> mutableListOf("    ", "    ", "    ")
+// Printing part of name or status. Get needed String as <String> and
+// line number as <Int>. Print needed line.
+fun printLines (string: String, lines: List<String>, maxStrLength: Int) {
+    val fontHeight = lines[0].split(" ").first().toInt()
+    var str = ""
+    string.forEach { str += getPartOfLetter(lines, it, 0) }
+
+    val length = str.length
+    val leftSpace = if (maxStrLength == length) {
+        ((maxStrLength + 4) - length) / 2
+    } else {
+        floor(((maxStrLength + 4) - length).toDouble() / 2).toInt()
     }
-    return partOfLetter[level]
+    val rightSpace = if (maxStrLength == length) {
+        ((maxStrLength + 4) - length) / 2
+    } else {
+        ceil(((maxStrLength + 4) - length).toDouble() / 2).toInt()
+    }
+
+    for (i in 0 until fontHeight) {
+        var line = ""
+        string.forEach { line += getPartOfLetter(lines, it, i) }
+        println("88" + " ".repeat(leftSpace) + line + " ".repeat(rightSpace) + "88")
+    }
+}
+
+
+// Get as input char as <Char>, and number of needed line as <int>.
+// Return needed line as <String>
+fun getPartOfLetter(lines: List<String>, char: Char, level: Int) : String {
+    val fontHeight = lines[0].split(" ").first().toInt()
+    var line = if (fontHeight == 10) "          " else "     "
+    for (i in lines.indices) {
+        if (lines[i].split(" ").first() == char.toString()) {
+            line = lines[i + 1 + level]
+            break
+        }
+    }
+
+    return line
 }
